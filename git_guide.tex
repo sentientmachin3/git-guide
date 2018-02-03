@@ -28,8 +28,8 @@
 	literate={à}{{\`a}}1
 }
 
-\title{\huge{Git per l'impaziente}}
-\author{Davide Bianchi, \\ un tizio qualunque}
+\title{\huge{Introduzione a Git}}
+\author{Davide Bianchi}
 \begin{document}
 	\maketitle
 	
@@ -107,23 +107,39 @@ git commit -m "<messaggio>"
 	Per mandare (in gergo nerd \emph{pushare}) i commit al remote si usa il comando \begin{lstlisting}
 git push <etichetta> <branch>
 	\end{lstlisting}
-	L'etichetta rappresenta il nome con il quale il remote è salvato in locale, mentre \lstinline|branch| è il nome del branch sul quale si vuole pushare (\lstinline|origin| nel caso precedente).
+	L'etichetta rappresenta il nome con il quale il remote è salvato in locale, mentre \lstinline|branch| è il nome del branch sul quale si vuole pushare (\lstinline|origin| nel caso precedente)\footnote{Per evitare confusione, useremo sempre l'etichetta \lstinline|origin|}.
 	
 	\section{Branching}
+	\subsection{Creazione e cancellazione}
 	Un \emph{branch} è un ramo del progetto indipendente da quello principale (\emph{master}), sul quale è possibile committare un codice qualsiasi. I branch tornano utili quando, ad esempio, si sta scrivendo una sezione critica del software e si vuole svilupparla senza rischiare di danneggiare il codice principale sul branch master. Di conseguenza si distinguono due casi:
 	\begin{itemize}
 		\item il codice sviluppato nel branch è valido e può essere eseguito il \emph{merge} con il master;
 		\item il codice sviluppato contiene errori o per qualche motivo non serve più. In tal caso sarà sufficiente cancellare il branch e il codice principale sul master non subirà nessuna modifica.
 	\end{itemize}
-	In sostanza, 
+	\newpage
+	Tornano comodi i seguenti comandi: 
+	\begin{center}
+			\begin{tabular}{ll}
+				Creare un branch & \lstinline|git branch <nome-branch>| \\
+				Ottenere una lista dei branch & \lstinline|git branch| \\
+				Cancellare un branch & \lstinline|git branch -d <nome-branch>|
+			\end{tabular}
+	\end{center}
 	
+	\subsection{Committare su branch}
+	Per eseguire un commit su un branch, è prima necessario spostarsi dal ramo\footnote{Si usano i termini \emph{ramo} e \emph{branch} indistintamente.} master al branch sul quale si vuole committare, con il comando: \begin{lstlisting}
+git checkout <nome-branch>
+	\end{lstlisting}
 	
+	Una volta eseguito il checkout, è sufficiente ridare i comandi per committare: \begin{lstlisting}
+git add -A
+git commit -m "<messaggio>"
+git push origin <branch>
+	\end{lstlisting}
+	sostituendo a \lstinline|branch| il nome del branch sul quale si è committato. Se, una volta committato, si vuole tornare sul master e fare altre modifiche, basterà eseguire il comando \lstinline|git checkout master|.
 	
-	
-	
-	
-	
-	
+	\subsection{Eseguire un merge tra due branch}
+
 	
 	
 	
