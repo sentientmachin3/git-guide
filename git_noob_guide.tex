@@ -1,0 +1,135 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{cleveref}
+\usepackage[margin=3cm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\nouppercase{\leftmark}}
+\rhead{\nouppercase{\rightmark}}
+\chead{}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\usepackage{hyperref}
+\hypersetup{
+	hidelinks, 
+	colorlinks = true,
+	linkcolor = black,
+}
+
+\lstset{inputencoding=utf8,
+	basicstyle=\ttfamily\small,
+	tabsize=2,
+	literate={à}{{\`a}}1
+}
+
+\title{\huge{Git per l'impaziente}}
+\author{Davide Bianchi, \\ un tizio qualunque}
+\begin{document}
+	\maketitle
+	
+	\pagenumbering{gobble}
+	\newpage
+	\tableofcontents
+	\newpage
+	
+	\pagenumbering{arabic}
+	\section{Introduzione}
+	Questa guida è dedicata a tutti coloro che vogliono avventurarsi nel mondo di Git. Git è un software di controllo versione distribuito utilizzabile da interfaccia a riga di comando, creato da Linus Torvalds nel 2005.
+	
+	Consente di gestire il codice tra più sviluppatori senza che questi debbano ogni volta passarsi il codice a mano, ma lasciando questo gravoso compito al tool.
+	
+	In questa guida ne illustreremo l'utilizzo di base, per consentire a chiunque la legga di imparare abbastanza velocemente il suo utilizzo, focalizzandoci sull'uso di una CLI (anche se sono disponibili numerosi tool che fanno uso di una GUI).
+	
+	\section{Setup dell'ambiente}
+	\subsection{Installazione}
+	L'installazione di git è semplice e immediata, infatti, se siete utenti Linux basterà installarlo usando il gestore di pacchetti \lstinline|apt|: dal terminale basta digitare il misterioso comando \footnote{Cit. Enrico Gregorio.}: \begin{lstlisting}
+sudo apt install git
+	\end{lstlisting}
+	Per gli utenti Windows e Mac basterà scaricarlo dal sito ufficiale \url{https://git-scm.com/}, selezionando il proprio sistema operativo.
+	
+	
+	\subsection{Configurazione}
+	Per rilevare chi inserisce un dato commit, git utilizza uno username, che va fornito prima di cominciare al tool con il comando:
+	\begin{lstlisting}
+git config --global user.name "<username>"
+	\end{lstlisting}
+	
+	È inoltre buona norma specificare l'indirizzo mail dal quale vengono eseguiti i commit, con il comando \begin{lstlisting}
+git config --global user.email "<mail>"
+	\end{lstlisting}
+	
+	\section{Utilizzo di base}
+	\subsection{Inizializzazione di un progetto}
+	\paragraph{Creazione di un nuovo progetto.}
+	Assumiamo che voi ora abbiate un account su GitHub, e vogliate creare un nuovo progetto da rendere disponibile open source (come ognuno dovrebbe fare).
+	
+	Una volta creata la repository online tramite il sito, sarà necessario collegare la repository online (che da ora in poi si chiamerà \emph{remote}) alla cartella in locale dove il codice sorgente si troverà. 
+	
+	Per fare ciò inizializziamo un repository git locale con il comando \begin{lstlisting}
+		git init
+	\end{lstlisting} che genererà una cartella \lstinline|.git| nella cartella con il codice sorgente. Questa conterrà informazioni relative ai branch e ai commit eseguiti.
+	
+	Per collegare il remote alla repository locale usiamo il comando \begin{lstlisting}
+git remote add origin <url>
+	\end{lstlisting}
+	che aggiungerà un remote etichettato come \lstinline|origin| alla repo locale. Al posto dell'url è possibile usare una chiave ssh, con qualche piccolo vantaggio (\url{https://help.github.com/articles/connecting-to-github-with-ssh/}).
+	
+	La fase di inizializzazione termina con l'aggiunta di un file \lstinline|.gitignore|, che conterrà le informazioni da ignorare quando si eseguiranno dei commit (in dettaglio più avanti).
+	
+	\paragraph{Partecipazione ad un progetto già avviato.}
+	Per partecipare ad un progetto già avviato non occorre inizializzare nulla, git infatti mette a disposizione un comando che \emph{clona} il repository remote in locale, con tutto integrato. Il comando è: \begin{lstlisting}
+git clone <url>
+	\end{lstlisting}
+	
+	Fatto questo passo, si può procedere alla modifica o aggiunta del codice.
+	
+	\subsection{Il meccanismo di commit}
+	Il commit è l'unità di base di git, sostanzialmente un malloppo di codice che va integrato nel progetto principale. Quando si scrive del codice, git tiene traccia delle modifiche fatte, visualizzabili tramite il comando \begin{lstlisting}
+git status
+	\end{lstlisting}
+	I file che vanno committati vanno prima raggruppati con il comando \begin{lstlisting}
+git add <file1> ... <filen>
+git add -A
+	\end{lstlisting}
+	
+	L'opzione \lstinline|-A|, da usare in alternativa ad un elenco di file, prepara per il commit \textbf{tutte} le modifiche eseguite.
+	Ora viene il bello: i commit in locale vanno eseguiti con il comando \begin{lstlisting}
+git commit -m "<messaggio>"
+	\end{lstlisting}
+	dove il messaggio è un sommario delle modifiche apportate. Un commit contiene tutte le modifiche che sono state raggruppate con il precedente \lstinline|git add|. È buona prassi scrivere messaggi sintetici ma esaustivi di quanto si è svolto.
+	
+	Per mandare (in gergo nerd \emph{pushare}) i commit al remote si usa il comando \begin{lstlisting}
+git push <etichetta> <branch>
+	\end{lstlisting}
+	L'etichetta rappresenta il nome con il quale il remote è salvato in locale, mentre \lstinline|branch| è il nome del branch sul quale si vuole pushare (\lstinline|origin| nel caso precedente).
+	
+	\section{Branching}
+	Un \emph{branch} è un ramo del progetto indipendente da quello principale (\emph{master}), sul quale è possibile committare un codice qualsiasi. I branch tornano utili quando, ad esempio, si sta scrivendo una sezione critica del software e si vuole svilupparla senza rischiare di danneggiare il codice principale sul branch master. Di conseguenza si distinguono due casi:
+	\begin{itemize}
+		\item il codice sviluppato nel branch è valido e può essere eseguito il \emph{merge} con il master;
+		\item il codice sviluppato contiene errori o per qualche motivo non serve più. In tal caso sarà sufficiente cancellare il branch e il codice principale sul master non subirà nessuna modifica.
+	\end{itemize}
+	In sostanza, 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+\end{document}
