@@ -23,7 +23,7 @@
 }
 
 \lstset{inputencoding=utf8,
-	basicstyle=\ttfamily\small,
+	basicstyle=\ttfamily\footnotesize,
 	tabsize=2,
 	literate={à}{{\`a}}1
 }
@@ -72,7 +72,7 @@ git config --global user.email "<mail>"
 	Una volta creata la repository online tramite il sito, sarà necessario collegare la repository online (che da ora in poi si chiamerà \emph{remote}) alla cartella in locale dove il codice sorgente si troverà. 
 	
 	Per fare ciò inizializziamo un repository git locale con il comando \begin{lstlisting}
-		git init
+git init
 	\end{lstlisting} che genererà una cartella \lstinline|.git| nella cartella con il codice sorgente. Questa conterrà informazioni relative ai branch e ai commit eseguiti.
 	
 	Per collegare il remote alla repository locale usiamo il comando \begin{lstlisting}
@@ -145,6 +145,29 @@ git push origin <branch>
 git merge <branch-base>
 	\end{lstlisting}
 	Onde evitare disastrose conseguenze per i progetti dei lettori di questa dispensa, si specifica quanto segue: il comando sopra esegue il merge del branch \lstinline|branch-base| nel branch corrente (quello dove ci si trova al momento attuale). Notare che il merge viene eseguito in locale, per averlo anche su remote basta pushare con i comandi dati in precendenza.
+	
+	\subsection{Conflitti durante il merge e risoluzione}
+	Durante il merge di due branch, potrebbe capitare di imbattersi in un conflitto, con un messaggio che recita all'incirca così:
+	\begin{lstlisting}
+Auto-merging styleguide.md
+CONFLICT (content): Merge conflict in styleguide.md
+Automatic merge failed; fix conflicts and then commit the result
+	\end{lstlisting}
+	
+	Il problema dei conflitti sorge quando entrambi i codici sono stati modificati. In questi casi git non può sapere quale delle due versioni sia quella da tenere. Nel file sorgente le righe coinvolte da un conflitto sono indicate come segue:
+	
+	\begin{lstlisting}
+If you have questions, please
+<<<<<<< HEAD
+open an issue
+=======
+ask your question in IRC.
+>>>>>>> <nome-branch>
+	\end{lstlisting}
+	
+	Dove da \lstinline|<<<<<<< HEAD| a \lstinline|=======| si ha la versione del codice che è contenuta nel branch corrente, mentre nella seconda parte (fino a \lstinline|>>>>>>> <nome-branch>|) quella dell'altro branch, con indicato il suo nome.
+	
+	Per risolvere il conflitto è necessario rimuovere i marker del conflitto e decidere quale delle due soluzioni tenere. Una volta apportate le modifiche si può eseguire il commit con la nuova versione.
 
 	
 	
