@@ -28,15 +28,29 @@
 	literate={à}{{\`a}}1
 }
 
-\title{\huge{Introduzione a Git}}
-\author{Davide Bianchi}
 \begin{document}
-	\maketitle
-	
-	\pagenumbering{gobble}
-	\newpage
-	\tableofcontents
-	\newpage
+ \clearpage
+ \begin{titlepage}
+ 	\centering
+ 	\vspace*{5cm}
+ 	\line(1,0){280} \\
+ 	{\huge\bfseries Introduzione a git\par}
+ 	\line(1,0){280} \\
+ 	\vspace{0.5cm}
+ 	{\scshape\Large Utilizzo di base\par}
+ 	\vspace{2cm}
+ 	{\Large\itshape Davide Bianchi\par}
+ 	\vspace{1cm}
+ 	
+ 	\vspace{5cm}
+ 	\vspace*{\fill}
+ 	% Bottom of the page
+ 	{\large \today\par}
+ \end{titlepage}
+ \thispagestyle{empty}
+ \newpage
+ \tableofcontents
+ \newpage
 	
 	\pagenumbering{arabic}
 	\section{Introduzione}
@@ -87,6 +101,12 @@ git remote add origin <url>
 git clone <url>
 	\end{lstlisting}
 	
+	\subsection{Aggiornamento del repository}
+	Se il repository è mantenuto da più sviluppatori, è possibile che questi abbiano committato e pushato sul remote, e aggiunto nuove caratteristiche al software. Per aggiornare il repository locale con le modifiche pushate da altri, è necessario usare i comandi \lstinline|git pull| e \lstinline|git fetch|.
+	
+	Il comando \lstinline|git fetch| scarica le informazioni dal remote e \textbf{non esegue nessun merge}. Il comando \lstinline|git pull| invece scarica le informazioni e tenta di eseguire il merge (ovviamente qui si possono generare dei conflitti, spiegati più avanti). Se si aggiorna il progetto con \lstinline|git fetch|, il merge va eseguito manualmente con \lstinline|git merge|. \\
+	
+	\noindent
 	Fatto questo passo, si può procedere alla modifica o aggiunta del codice.
 	
 	\subsection{Il meccanismo di commit}
@@ -109,6 +129,17 @@ git push <etichetta> <branch>
 	\end{lstlisting}
 	L'etichetta rappresenta il nome con il quale il remote è salvato in locale, mentre \lstinline|branch| è il nome del branch sul quale si vuole pushare (\lstinline|origin| nel caso precedente)\footnote{Per evitare confusione, useremo sempre l'etichetta \lstinline|origin|}.
 	
+	È possibile saltare la fase di staging dei file modificati quando si intende pushare tutte le modifiche, usando il comando \begin{lstlisting}
+git commit -a -m "<messaggio>"
+	\end{lstlisting}
+	
+	\subsection{Cronologia dei commit}
+	È possibile visualizzare la cronologia dei commit usando il comando \lstinline|git log|, con due opzioni che lo possono rendere particolarmente utile, quali:
+	\begin{itemize}
+		\item \lstinline|-p| per avere un riepilogo delle modifiche apportate;
+		\item \lstinline|-n| con $n$ numero positivo per limitare l'output del log alle ultime $n$ entry.
+	\end{itemize}
+	
 	\section{Branching}
 	\subsection{Creazione e cancellazione}
 	Un \emph{branch} è un ramo del progetto indipendente da quello principale (\emph{master}), sul quale è possibile committare un codice qualsiasi. I branch tornano utili quando, ad esempio, si sta scrivendo una sezione critica del software e si vuole svilupparla senza rischiare di danneggiare il codice principale sul branch master. Di conseguenza si distinguono due casi:
@@ -116,7 +147,6 @@ git push <etichetta> <branch>
 		\item il codice sviluppato nel branch è valido e può essere eseguito il \emph{merge} con il master;
 		\item il codice sviluppato contiene errori o per qualche motivo non serve più. In tal caso sarà sufficiente cancellare il branch e il codice principale sul master non subirà nessuna modifica.
 	\end{itemize}
-	\newpage
 	Tornano comodi i seguenti comandi: 
 	\begin{center}
 			\begin{tabular}{ll}
@@ -146,7 +176,7 @@ git merge <branch-base>
 	\end{lstlisting}
 	Onde evitare disastrose conseguenze per i progetti dei lettori di questa dispensa, si specifica quanto segue: il comando sopra esegue il merge del branch \lstinline|branch-base| nel branch corrente (quello dove ci si trova al momento attuale). Notare che il merge viene eseguito in locale, per averlo anche su remote basta pushare con i comandi dati in precendenza.
 	
-	\subsection{Conflitti durante il merge e risoluzione}
+	\subsection{Conflitti durante il merge}
 	Durante il merge di due branch, potrebbe capitare di imbattersi in un conflitto, con un messaggio che recita all'incirca così:
 	\begin{lstlisting}
 Auto-merging styleguide.md
@@ -168,6 +198,28 @@ ask your question in IRC.
 	Dove da \lstinline|<<<<<<< HEAD| a \lstinline|=======| si ha la versione del codice che è contenuta nel branch corrente, mentre nella seconda parte (fino a \lstinline|>>>>>>> <nome-branch>|) quella dell'altro branch, con indicato il suo nome.
 	
 	Per risolvere il conflitto è necessario rimuovere i marker del conflitto e decidere quale delle due soluzioni tenere. Una volta apportate le modifiche si può eseguire il commit con la nuova versione.
+	
+	\section{Annullare azioni}
+	Con git si possono annullare alcune azioni (quasi tutto in realtà), quali disfare dei commit, modificare dei commit esistenti, ecc.
+	
+	\subsection{Modificare dei commit}
+	La modifica dei commit è un procedimento che si svolge spesso, ad esempio quando ci si dimentica di fare una modifica ad un file ed è appena stato fatto un commit. Supponiamo di aver dato i seguenti comandi: \begin{lstlisting}
+git add -A
+git commit -m "Added code"
+	\end{lstlisting}
+	
+	A questo punto ci accorgiamo di non aver aggiunto un nuovo file di cui il progetto ha bisogno. Dopo aver aggiunto il file quindi si danno i seguenti comandi: \begin{lstlisting}
+git add forgotten_file
+git commit --amend
+	\end{lstlisting}
+	
+	Il risultato sarà un unico commit, ma quello con il file dimenticato andrà a rimpiazzare quello precedente.	
+	
+	
+	
+
+	
+
 
 	
 	
