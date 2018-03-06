@@ -6,6 +6,7 @@
 \usepackage{cleveref}
 \usepackage[margin=3cm]{geometry}
 \usepackage{fancyhdr}
+\usepackage{txfonts}
 \pagestyle{fancy}
 \lhead{\nouppercase{\leftmark}}
 \rhead{\nouppercase{\rightmark}}
@@ -23,7 +24,7 @@
 }
 
 \lstset{inputencoding=utf8,
-	basicstyle=\ttfamily\footnotesize,
+	basicstyle=\ttfamily\small,
 	tabsize=2,
 	literate={à}{{\`a}}1
 }
@@ -213,7 +214,55 @@ git add forgotten_file
 git commit --amend
 	\end{lstlisting}
 	
-	Il risultato sarà un unico commit, ma quello con il file dimenticato andrà a rimpiazzare quello precedente.	
+	Il risultato sarà un unico commit, ma quello con il file dimenticato andrà a rimpiazzare quello precedente.
+	\newpage
+	\renewcommand{\headrulewidth}{0.4pt}
+	\pagenumbering{gobble}
+	\date{}
+
+	\renewcommand{\arraystretch}{1.1}
+		
+		\section{Appendice: principali comandi}
+		\subsection{Configurazione della repo}
+		\begin{tabular}{p{9cm} p{6cm}}
+			Inizializzazione del repository &\verb|git init| \\
+			Includere un remote &\verb|git remote add [label] [url]| \\
+			Download di un progetto &\verb|git clone [url]| \\
+		\end{tabular}
+		
+		\subsection{Comandi per i branch}
+		\begin{tabular}{p{9cm} p{6cm}}
+			Creazione di un branch & \verb|git branch [name]| \\
+			Switch di branch& \verb|git checkout [name]| \\
+			Mostrare la lista dei branch & \verb|git branch| \\
+			Cancellare un branch& \verb|git branch -d [name]| \\
+			Merge di \verb|[branch]| nel branch corrente& \verb|git merge [branch]|
+		\end{tabular}
+		
+		\subsection{Committare le modifiche}
+		\begin{tabular}{p{9cm} p{6cm}}
+			Preparare i file per il commit& \verb|git add [files]| \\
+			Preparare tutti i file per il commit& \verb|git add -A| \\
+			Elencare le modifiche da committare& \verb|git status|\\
+			Rimuovere i file dalla \textit{stage-area}& \verb|git reset [files]|\\
+			Committare i file& \verb|git commit -m "[message]"| \\
+			Disfare le modifiche dopo \verb|[commit]| mantenendo le modifiche& \verb|git reset [commit]| \\
+			Disfare tutto fino a \verb|[commit]|& \verb|git reset --hard [commit]|
+		\end{tabular}
+		
+		\subsection{Aggiornare la repo locale}
+		\begin{tabular}{p{9cm} p{6cm}}
+			Scaricare la cronologia dal remote& \verb|git fetch [alias] [branch]| \\
+			Scaricare la cronologia e incorporare le modifiche& \verb|git pull [alias] [branch]| \\
+			Pushare i file sul remote& \verb|git push [alias] [branch]|\\
+		\end{tabular}
+		
+		\subsection{Navigazione della cronologia}
+		\begin{tabular}{p{9cm} p{6cm}}
+			Elencare la cronologia& \verb|git log|\\
+			Mostrare le modifiche di un commit& \verb|git show [commit]|\\
+			Mostrare le modifiche tra branch& \verb|git diff [branch1] [branch2]|\\
+		\end{tabular}
 	
 	
 	
