@@ -215,6 +215,18 @@ git commit --amend
 	\end{lstlisting}
 	
 	Il risultato sarà un unico commit, ma quello con il file dimenticato andrà a rimpiazzare quello precedente.
+	
+	\subsection{Stashing delle modifiche}
+	Spesso ci si trova nella situazione di dover fare una pull dopo aver svolto delle modifiche, a volte anche corpose. Se si tenta di fare una pull con delle modifiche non committate, si otterrà un seguente messaggio di errore in cui git si lamenta del fatto che non sa come gestire le modifiche locali. In tal caso è possibile salvare le modifiche apportate, eseguire la pull, e poi riapplicare le modifiche (potrebbe causare dei conflitti).
+	
+	Con il comando \lstinline|git stash|, le modifiche attuali vengono salvate su uno stack e rimosse dal codice sorgente. Successivamente è possibile eseguire una pull come spiegato in precedenza, per poi riapplicare le modifiche togliendole dalla cima dello stack con il comando \lstinline|git stash apply|.
+	
+	Complessivamente, la sequenza di comandi necessaria ad ovviare il problema originale è la seguente:
+	\begin{lstlisting}
+git stash
+git pull [alias] [branch]
+git stash apply
+	\end{lstlisting}
 	\newpage
 	\renewcommand{\arraystretch}{1.1}
 		
