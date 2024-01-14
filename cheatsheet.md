@@ -12,15 +12,15 @@ This is a personal cheat sheet for the commands I use. Feel free to report error
 
 ## Branching
 
-| Command                                                   | Description                                        |
-| --------------------------------------------------------- | -------------------------------------------------- |
-| `git branch [branch-name]`                                | Create a new branch                                |
-| `git checkout [branc-name]`                               | Move to a new branch (impacts local modifications) |
-| `git branch [-a]`                                         | List branches                                      |
-| `git branch -D [branch-name]`                             | Delete a local branch by name                      |
-| `git merge [branch-name]`                                 | Merge the named branch into the current one        |
-| `git worktree add [name] [source-branch] -b [branch-name] | Create a new worktree from a branch                |
-| `git worktree list`                                       | List worktrees                                     |
+| Command                                                    | Description                                        |
+| ---------------------------------------------------------- | -------------------------------------------------- |
+| `git branch [branch-name]`                                 | Create a new branch                                |
+| `git checkout [branc-name]`                                | Move to a new branch (impacts local modifications) |
+| `git branch [-a]`                                          | List branches                                      |
+| `git branch -D [branch-name]`                              | Delete a local branch by name                      |
+| `git merge [branch-name]`                                  | Merge the named branch into the current one        |
+| `git worktree add [name] [source-branch] -b [branch-name]` | Create a new worktree from a branch                |
+| `git worktree list`                                        | List worktrees                                     |
 
 ## Committing changes
 
