@@ -4,4 +4,5 @@ tasks:
   build:
     desc: "Convert the guide to html"
     cmds:
-      - "markdown-it git-guide.md > git-guide.html"
+      - "markdown-it git-guide.md > web/git-guide.html"
+      - "npx prettier -w web/git-guide.html"
