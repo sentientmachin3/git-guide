@@ -87,7 +87,25 @@ Some times you may want to commit all your local changes directly, for this case
 Cool, now we have committed changes locally, time to push to remote. This is pretty simple, just run
 
 ```
-git push <remote_name> <remote_branch>
+git push [--force] <remote_name> <remote_branch>
 ```
 
-Changes will appear on the remote server, in the branch you are currently working on. 
+Changes will appear on the remote server, in the branch you are currently working on.
+
+However, pushing to a remote without catching up with its newest changes may result in your changes not being accepted by the remote itself. The reason is simple: you are pushing a new history to the remote that does not contain some of the changes that already exist on the remote. There is a couple of ways you can fix this issue:
+
+- merge remote changes into your branch, which the safest option;
+- force pushing your changes (with the `--force` flag).
+
+#### Force pushing
+
+Force pushing will overwrite all remote changes with your local "branch status". Now suppose someone made some changes and pushed them to the same branch you are working on. You never merged those changes locally, so you don'thave them at all; in this case force pushing will result in changes of your coworker being deleted from the branch (and it's not very pleasant, I can assure you).
+
+**Note: always specify the branch you are force pushing on, trust me.**
+
+To avoid this inconveniences, the wisest option is to merge remote changes, always. There are a couple of cases you may want to force push though, which I tend to use frequently:
+
+- you modified a local commit and want to overwrite the existing one on the remote;
+- you squashed some commits together and want to update the remote history with the squashed version.
+
+A safer option to use instead of `--force` is `--force-with-lease` (which I strongly suggest as the default). This will avoid overwriting other's commits on the remote branch.
