@@ -126,7 +126,7 @@ git config --global user.email &quot;&lt;email&gt;&quot;
   have any new files though, changes have to be manually added to the staging
   area (at least to my experience).
 </p>
-<h3>Pushing to remote</h3>
+<h2>Syncing changes with remote</h2>
 <p>
   Cool, now we have committed changes locally, time to push to remote. This is
   pretty simple, just run
@@ -181,4 +181,65 @@ git config --global user.email &quot;&lt;email&gt;&quot;
   A safer option to use instead of <code>--force</code> is
   <code>--force-with-lease</code> (which I strongly suggest as the default).
   This will avoid overwriting other's commits on the remote branch.
+</p>
+<h3>Pulling remote changes locally</h3>
+<p>
+  Git allows you to merge other's people work into your local repository. To
+  merge a remote branch, you have to run the <code>pull</code> command:
+</p>
+<pre><code>git pull &lt;remote_name&gt; &lt;branch_name&gt;
+</code></pre>
+<p>
+  This command will merge all the changes you do not have locally,
+  &quot;automagically&quot; integrating them into your version of the repository
+  and updating the current <code>HEAD</code> pointer to the top of the updated
+  branch.
+</p>
+<h4>Merge conflicts without getting crazy</h4>
+<p>
+  Sometimes you and your coworker may have worked on the same files, and git may
+  not be able to merge them correctly. In this case git generates what is called
+  a <strong>merge conflict</strong>. A conflict occurs when you have some
+  changes locally and you try to incorporate changes from another branch (which
+  may or may not be on the remote).
+</p>
+<p>
+  Git of course will not make any assumptions on how to resolve the conflicts,
+  allowing the developer to take the necessary actions to fix the issue. The
+  portion of code interested by the conflict will look like this:
+</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+&lt;your code&gt;
+=======
+&lt;their code&gt;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; [git hash]
+</code></pre>
+<p>
+  I agree this may look very scary (don't panic). It is indeed very simple: the
+  first section marks the local code (the one your current HEAD points to); the
+  bottom section contains the conflicting code pulled from the branch you are
+  merging from. Note that <code>[git hash]</code> is the hash of the commit you
+  are merging.
+</p>
+<p>You have now four choices:</p>
+<ol>
+  <li>
+    Forget about your code, remove it entirely and keep the code of the branch
+    you are merging from;
+  </li>
+  <li>
+    Forget about your coworker's code, remove the bottom part and keep yours;
+  </li>
+  <li>
+    Merge the two sections to adjust the logic of the file to make some kind of
+    sense;
+  </li>
+  <li>
+    Forget about the conflict, run <code>git merge --abort</code> and keep
+    coding.
+  </li>
+</ol>
+<p>
+  Once you have solved the issue (supposing you did), git enforces you to commit
+  the changes. Personally, I like to specify which branch I was trying to merge.
 </p>

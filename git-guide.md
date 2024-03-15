@@ -82,7 +82,7 @@ This command will generate a new commit on top of the current history, update th
 
 Some times you may want to commit all your local changes directly, for this cases I use a cool shortcut: if none of the changes happened to be on a new file, you can commit them directly adding the `-a` flag to the commit command. This will automatically add all the changes to the staging area and commit them, without the need to adding them manually. In case you have any new files though, changes have to be manually added to the staging area (at least to my experience).
 
-### Pushing to remote
+## Syncing changes with remote
 
 Cool, now we have committed changes locally, time to push to remote. This is pretty simple, just run
 
@@ -109,3 +109,38 @@ To avoid this inconveniences, the wisest option is to merge remote changes, alwa
 - you squashed some commits together and want to update the remote history with the squashed version.
 
 A safer option to use instead of `--force` is `--force-with-lease` (which I strongly suggest as the default). This will avoid overwriting other's commits on the remote branch.
+
+### Pulling remote changes locally
+
+Git allows you to merge other's people work into your local repository. To merge a remote branch, you have to run the `pull` command:
+
+```
+git pull <remote_name> <branch_name>
+```
+
+This command will merge all the changes you do not have locally, "automagically" integrating them into your version of the repository and updating the current `HEAD` pointer to the top of the updated branch.
+
+#### Merge conflicts without getting crazy
+
+Sometimes you and your coworker may have worked on the same files, and git may not be able to merge them correctly. In this case git generates what is called a **merge conflict**. A conflict occurs when you have some changes locally and you try to incorporate changes from another branch (which may or may not be on the remote).
+
+Git of course will not make any assumptions on how to resolve the conflicts, allowing the developer to take the necessary actions to fix the issue. The portion of code interested by the conflict will look like this:
+
+```
+<<<<<<< HEAD
+<your code>
+=======
+<their code>
+>>>>>>> [git hash]
+```
+
+I agree this may look very scary (don't panic). It is indeed very simple: the first section marks the local code (the one your current HEAD points to); the bottom section contains the conflicting code pulled from the branch you are merging from. Note that `[git hash]` is the hash of the commit you are merging.
+
+You have now four choices:
+
+1. Forget about your code, remove it entirely and keep the code of the branch you are merging from;
+2. Forget about your coworker's code, remove the bottom part and keep yours;
+3. Merge the two sections to adjust the logic of the file to make some kind of sense;
+4. Forget about the conflict, run `git merge --abort` and keep coding.
+
+Once you have solved the issue (supposing you did), git enforces you to commit the changes. Personally, I like to specify which branch I was trying to merge.
