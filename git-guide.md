@@ -24,7 +24,7 @@ git config --global user.email "<email>"
 
 This commands will ensure your git configuration is coeherent amongst all repositories, both locally and on remotes.
 
-## Usage
+## Setup
 
 ### Project start and initialization
 
@@ -144,3 +144,9 @@ You have now four choices:
 4. Forget about the conflict, run `git merge --abort` and keep coding.
 
 Once you have solved the issue (supposing you did), git enforces you to commit the changes. Personally, I like to specify which branch I was trying to merge.
+
+## Tips and tricks
+
+### Updating a commit
+
+Sometimes you may need to update a commit, there are a few cases, for example, you forgot to add some files, or you mispelled something in the message. In this case, the `--amend` option comes to the rescue. To upgrade an existing commit, you have to commit again with this option. This will update the last commit with the new staging area. Note that, if you previously pushed the branch, since you changed the history, you have to force push the new one.
